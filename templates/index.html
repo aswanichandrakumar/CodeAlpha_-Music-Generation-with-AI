@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Music Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>AI Music Generator</h1>
+    <button id="generate-btn">Generate Music</button>
+    <a id="download-link" style="display: none;">Download MIDI</a>
+
+    <script>
+        document.getElementById("generate-btn").addEventListener("click", function() {
+            fetch("/generate", { method: "POST" })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.getElementById("download-link");
+                    a.href = url;
+                    a.style.display = "block";
+                    a.innerText = "Download MIDI";
+                    a.download = "generated_music.mid";
+                });
+        });
+    </script>
+</body>
+</html>
